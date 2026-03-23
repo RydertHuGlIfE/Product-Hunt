@@ -1,4 +1,4 @@
-from flask import Flask, jsonify
+from flask import Flask, jsonify, request
 from flask_cors import CORS
 import os
 import dotenv
@@ -36,6 +36,20 @@ def home_page():
         "version": "1.0.0",
         "db_status": db_status
     })
+
+
+@app.route("/api/add_products", methods=['POST'])
+def add_products():
+    try:
+        data = request.get_json()
+        if mongo.db is None:
+            print("Error DB not intialized")
+        else:
+            print(f"Connected to- {mongo.db.name}")
+        mongo.db.products.insert_one(data)
+        return jsonify({"message": "Product added successfully"}), 200
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
 
 if __name__ == '__main__':
     app.run(debug=True, port=5000)
