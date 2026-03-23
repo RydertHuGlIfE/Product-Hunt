@@ -38,6 +38,19 @@ def home_page():
     })
 
 
+@app.route("/api/delete_products", methods=['POST'])
+def delete_products():
+    try:
+        data = request.get_json()
+        if mongo.db is None:
+            print("NO DB AAAA")
+        else:
+            print("MONGO DB IS HERE")
+        mongo.db.products.delete_one(data)
+        return jsonify({"message": "Product deleted successfully"}), 200
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
 @app.route("/api/add_products", methods=['POST'])
 def add_products():
     try:
@@ -50,6 +63,7 @@ def add_products():
         return jsonify({"message": "Product added successfully"}), 200
     except Exception as e:
         return jsonify({"error": str(e)}), 500
+
 
 if __name__ == '__main__':
     app.run(debug=True, port=5000)

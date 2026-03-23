@@ -9,6 +9,7 @@ function App() {
   // Product Form State
   const [productName, setProductName] = useState('')
   const [productPrice, setProductPrice] = useState('')
+  const [productCategory, setProductCategory] = useState('')
   const [productDesc, setProductDesc] = useState('')
   const [products, setProducts] = useState([])
 
@@ -28,21 +29,12 @@ function App() {
     }
   }
 
-  const fetchProducts = async () => {
-    try {
-      // In a real app, you'd have an endpoint for this.
-      // For now, we just fetch assuming the backend handles it or we show what we added.
-      // Let's assume there's no GET /api/products yet, but we'll show the added ones.
-    } catch (err) {
-      console.error(err)
-    }
-  }
-
   const handleAddProduct = async (e) => {
     e.preventDefault()
     const newProduct = {
       name: productName,
       price: productPrice,
+      category: productCategory,
       description: productDesc
     }
 
@@ -58,10 +50,32 @@ function App() {
         setProducts([...products, newProduct])
         setProductName('')
         setProductPrice('')
+        setProductCategory('')
         setProductDesc('')
       } else {
         const errData = await response.json()
         alert('Error: ' + (errData.error || 'Failed to add product'))
+      }
+    } catch (err) {
+      alert('Network Error: ' + err.message)
+    }
+  }
+
+  const handleDeleteProduct = async (product) => {
+    if (!window.confirm(`Are you sure you want to delete "${product.name}"?`)) return
+
+    try {
+      const response = await fetch('/api/delete_products', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name: product.name })
+      })
+
+      if (response.ok) {
+        setProducts(products.filter(p => p.name !== product.name))
+        alert('Product deleted!')
+      } else {
+        alert('Failed to delete product')
       }
     } catch (err) {
       alert('Network Error: ' + err.message)
@@ -99,13 +113,22 @@ function App() {
       <div className="form-section">
         <h2>Add New Product</h2>
         <form onSubmit={handleAddProduct} className="product-form">
-          <input 
-            type="text" 
-            placeholder="Product Name" 
-            value={productName} 
-            onChange={(e) => setProductName(e.target.value)} 
-            required 
-          />
+          <div className="input-group">
+            <input 
+              type="text" 
+              placeholder="Product Name" 
+              value={productName} 
+              onChange={(e) => setProductName(e.target.value)} 
+              required 
+            />
+            <input 
+              type="text" 
+              placeholder="Category" 
+              value={productCategory} 
+              onChange={(e) => setProductCategory(e.target.value)} 
+              required 
+            />
+          </div>
           <input 
             type="number" 
             placeholder="Price" 
@@ -130,7 +153,11 @@ function App() {
           ) : (
             products.map((p, index) => (
               <div key={index} className="product-card">
-                <h3>{p.name}</h3>
+                <div className="card-header">
+                  <h3>{p.name}</h3>
+                  <button onClick={() => handleDeleteProduct(p)} className="delete-btn">×</button>
+                </div>
+                <p className="category">{p.category}</p>
                 <p className="price">${p.price}</p>
                 <p className="desc">{p.description}</p>
               </div>
