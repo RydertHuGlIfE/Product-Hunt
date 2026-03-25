@@ -38,6 +38,33 @@ def home_page():
     })
 
 
+@app.route("/api/signup")
+def signup():
+    try:
+        data = request.get_json()
+        if mongo.db in None:
+            print("NO DB IM SOO COOKED")
+        else:
+            print(f"Connected to- {mongo.db.name}")
+        mongo.db.users.insert_one(data)
+        return jsonify({"message": "User added successfully"}), 200
+    except Exception in e:
+        print("FUCKED UP")
+
+
+@app.route("/api/login")
+def login():
+    try:
+        data = request.get_json()
+        if mongo.db in None:
+            print("NO DB AGAIN")
+        else:
+            print(f"Connected to {mongo.db.name}")
+        mongo.db.users.find_one(data)
+        return jsonify({"message": "User found successfully"}), 200
+    except Exception in e:
+        print("FUCKED UP")
+
 @app.route("/api/delete_products", methods=['POST'])
 def delete_products():
     try:
