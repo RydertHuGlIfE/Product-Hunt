@@ -17,7 +17,11 @@ function App() {
         <main className="content">
           <Routes>
             <Route path="/" element={
-              user ? <Home /> : <Navigate to="/login" />
+              user ? (
+                user.role === 'seller' ? <Navigate to="/dashboard" /> : <Home />
+              ) : (
+                <Navigate to="/login" />
+              )
             } />
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<Signup />} />

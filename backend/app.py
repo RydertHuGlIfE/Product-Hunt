@@ -3,6 +3,7 @@ from flask_cors import CORS
 import os
 import dotenv
 from flask_pymongo import PyMongo
+from werkzeug.security import generate_password_hash, check_password_hash
 
 dotenv = dotenv.load_dotenv()
 monguri = os.getenv('MONGO_URI')
@@ -46,6 +47,12 @@ def signup_seller():
             print("NO DB IM SOO COOKED")
         else:
             print(f"Connected to- {mongo.db.name}")
+            
+        email = data.get('email')
+        if mongo.db.users.find_one({'email': email}):
+            return jsonify({"error": "User with this email already exists"}), 409
+            
+        data['password'] = generate_password_hash(data.get('password'))
         data['role'] = 'seller'
         mongo.db.users.insert_one(data)
         return jsonify({"message": "Seller added successfully"}), 200
@@ -62,10 +69,13 @@ def login_seller():
             print("NO DB AGAIN")
         else:
             print(f"Connected to {mongo.db.name}")
-        data['role'] = 'seller'
-        user = mongo.db.users.find_one(data)
-        if user:
-            return jsonify({"message": "Seller found successfully", "user": {"email": data.get("email"), "role": "seller"}}), 200
+            
+        email = data.get('email')
+        password = data.get('password')
+        user = mongo.db.users.find_one({'email': email, 'role': 'seller'})
+        
+        if user and check_password_hash(user.get('password', ''), password):
+            return jsonify({"message": "Seller found successfully", "user": {"email": email, "role": "seller"}}), 200
         else:
             return jsonify({"error": "Invalid seller credentials"}), 401
     except Exception as e:
@@ -82,6 +92,12 @@ def signup_consumer():
             print("NO DB IM SOO COOKED")
         else:
             print(f"Connected to- {mongo.db.name}")
+            
+        email = data.get('email')
+        if mongo.db.users.find_one({'email': email}):
+            return jsonify({"error": "User with this email already exists"}), 409
+            
+        data['password'] = generate_password_hash(data.get('password'))
         data['role'] = 'consumer'
         mongo.db.users.insert_one(data)
         return jsonify({"message": "Consumer added successfully"}), 200
@@ -98,10 +114,13 @@ def login_consumer():
             print("NO DB AGAIN")
         else:
             print(f"Connected to {mongo.db.name}")
-        data['role'] = 'consumer'
-        user = mongo.db.users.find_one(data)
-        if user:
-            return jsonify({"message": "Consumer found successfully", "user": {"email": data.get("email"), "role": "consumer"}}), 200
+            
+        email = data.get('email')
+        password = data.get('password')
+        user = mongo.db.users.find_one({'email': email, 'role': 'consumer'})
+        
+        if user and check_password_hash(user.get('password', ''), password):
+            return jsonify({"message": "Consumer found successfully", "user": {"email": email, "role": "consumer"}}), 200
         else:
             return jsonify({"error": "Invalid consumer credentials"}), 401
     except Exception as e:
@@ -145,7 +164,7 @@ def add_products_seller():
         return jsonify({"error": str(e)}), 500
 
 
-@app.route("/api/products", methods=['GET'])                    #ye waala actual feed product list display 
+@app.route("/api/products", methods=['GET'])                    #ye waala actual feed product list display karta hai confuse mat hona 
 def get_products():
     try:
         if mongo.db is None:

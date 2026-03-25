@@ -25,7 +25,11 @@ const Login = () => {
       const data = await response.json();
       if (response.ok) {
         localStorage.setItem('user', JSON.stringify(data.user));
-        navigate('/');
+        if (data.user.role === 'seller') {
+          navigate('/dashboard');
+        } else {
+          navigate('/');
+        }
       } else {
         setError(data.error || 'Invalid credentials');
       }
