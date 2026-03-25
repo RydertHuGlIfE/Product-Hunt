@@ -111,16 +111,19 @@ def login_consumer():
 
 
 @app.route("/api/consumer/view_displayed_products", methods=['POST'])
-def view_displayed_products():
+def view_displayed_products():                          # ye waala function displayed products ke detail nikalta hai 
     try:
         data = request.get_json()
         if mongo.db is None:
             return jsonify({"error": "DB not initialized"}), 500
-        
-        # This endpoint logs a product view
-        product = mongo.db.products.find_one({'name': data.get('name')})
+
+        # Return FULL product details (excluding _id)
+        product = mongo.db.products.find_one({'name': data.get('name')}, {"_id": 0})
         if product:
-            return jsonify({"message": "Product view logged", "product": {"name": product['name']}}), 200
+            return jsonify({
+                "message": "Product found", 
+                "product": product
+            }), 200
         else:
             return jsonify({"error": "Product not found"}), 404
     except Exception as e:
@@ -134,7 +137,6 @@ def add_products_seller():
         if mongo.db is None:
             return jsonify({"error": "DB not initialized"}), 500
         
-        # Consistent key for product ownership
         data['seller_email'] = data.pop('email', None) 
         
         mongo.db.products.insert_one(data)
@@ -143,7 +145,7 @@ def add_products_seller():
         return jsonify({"error": str(e)}), 500
 
 
-@app.route("/api/products", methods=['GET'])
+@app.route("/api/products", methods=['GET'])                    #ye waala actual feed product list display 
 def get_products():
     try:
         if mongo.db is None:
