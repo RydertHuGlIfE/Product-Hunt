@@ -21,7 +21,7 @@ const Navbar = () => {
         
         <div className="nav-links">
           {user ? (
-            <>
+            <div className="nav-profile-group">
               {user.role === 'seller' && (
                 <Link to="/dashboard" className="nav-item">
                   <PlusSquare size={18} />
@@ -29,23 +29,23 @@ const Navbar = () => {
                 </Link>
               )}
               <div className="user-profile">
-                <span>{user.email}</span>
-                <button onClick={handleLogout} className="logout-btn">
+                <span className="user-email-tag">{user.email}</span>
+                <button onClick={handleLogout} className="logout-btn" title="Logout">
                   <LogOut size={18} />
                 </button>
               </div>
-            </>
+            </div>
           ) : (
-            <>
+            <div className="auth-nav-links">
               <Link to="/login" className="nav-item">
                 <LogIn size={18} />
                 <span>Login</span>
               </Link>
-              <Link to="/signup" className="nav-item signup-btn">
+              <Link to="/signup" className="nav-item signup-cta">
                 <UserPlus size={18} />
-                <span>Sign Up</span>
+                <span>Join Now</span>
               </Link>
-            </>
+            </div>
           )}
         </div>
       </div>

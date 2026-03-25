@@ -17,6 +17,11 @@ const Dashboard = () => {
       navigate('/login');
       return;
     }
+    // Redirect if user is not a seller
+    if (user.role !== 'seller') {
+      navigate('/');
+      return;
+    }
     fetchMyProducts();
   }, [user]);
 

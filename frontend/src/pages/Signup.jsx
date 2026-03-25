@@ -24,7 +24,7 @@ const Signup = () => {
 
       const data = await response.json();
       if (response.ok) {
-        alert('Account created! Please login.');
+        alert('Account created! Please sign in.');
         navigate('/login');
       } else {
         setError(data.error || 'Failed to create account');

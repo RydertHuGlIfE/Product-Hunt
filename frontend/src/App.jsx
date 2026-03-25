@@ -8,13 +8,17 @@ import Dashboard from './pages/Dashboard';
 import './App.css';
 
 function App() {
+  const user = JSON.parse(localStorage.getItem('user'));
+  
   return (
     <Router>
       <div className="app-main">
         <Navbar />
         <main className="content">
           <Routes>
-            <Route path="/" element={<Home />} />
+            <Route path="/" element={
+              user ? <Home /> : <Navigate to="/login" />
+            } />
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<Signup />} />
             <Route path="/dashboard" element={<Dashboard />} />
