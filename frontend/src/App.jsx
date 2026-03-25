@@ -1,174 +1,32 @@
-import { useState, useEffect } from 'react'
-import './App.css'
+import React from 'react';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import Navbar from './components/Navbar';
+import Home from './pages/Home';
+import Login from './pages/Login';
+import Signup from './pages/Signup';
+import Dashboard from './pages/Dashboard';
+import './App.css';
 
 function App() {
-  const [data, setData] = useState(null)
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState(null)
-  
-  // Product Form State
-  const [productName, setProductName] = useState('')
-  const [productPrice, setProductPrice] = useState('')
-  const [productCategory, setProductCategory] = useState('')
-  const [productDesc, setProductDesc] = useState('')
-  const [products, setProducts] = useState([])
-
-  const fetchStatus = async () => {
-    setLoading(true)
-    try {
-      const response = await fetch('/api/status')
-      if (!response.ok) throw new Error('Backend unreachable')
-      const result = await response.json()
-      setData(result)
-      setError(null)
-    } catch (err) {
-      setError(err.message)
-      setData(null)
-    } finally {
-      setLoading(false)
-    }
-  }
-
-  const handleAddProduct = async (e) => {
-    e.preventDefault()
-    const newProduct = {
-      name: productName,
-      price: productPrice,
-      category: productCategory,
-      description: productDesc
-    }
-
-    try {
-      const response = await fetch('/api/add_products', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(newProduct)
-      })
-
-      if (response.ok) {
-        alert('Product added successfully!')
-        setProducts([...products, newProduct])
-        setProductName('')
-        setProductPrice('')
-        setProductCategory('')
-        setProductDesc('')
-      } else {
-        const errData = await response.json()
-        alert('Error: ' + (errData.error || 'Failed to add product'))
-      }
-    } catch (err) {
-      alert('Network Error: ' + err.message)
-    }
-  }
-
-  const handleDeleteProduct = async (product) => {
-    if (!window.confirm(`Are you sure you want to delete "${product.name}"?`)) return
-
-    try {
-      const response = await fetch('/api/delete_products', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name: product.name })
-      })
-
-      if (response.ok) {
-        setProducts(products.filter(p => p.name !== product.name))
-        alert('Product deleted!')
-      } else {
-        alert('Failed to delete product')
-      }
-    } catch (err) {
-      alert('Network Error: ' + err.message)
-    }
-  }
-
-  useEffect(() => {
-    fetchStatus()
-  }, [])
-
   return (
-    <div className="container">
-      <h1>Product Hunt Admin</h1>
-      <p className="subtitle">Manage your MongoDB product catalog</p>
-      
-      <div className="status-card">
-        {loading ? (
-          <p>Connecting to backend...</p>
-        ) : error ? (
-          <div>
-            <span className="status-indicator status-offline"></span>
-            <p>Backend Status: <span style={{color: '#ef4444'}}>Offline</span></p>
-            <p style={{fontSize: '0.8rem', marginTop: '5px'}}>{error}</p>
-          </div>
-        ) : (
-          <div>
-            <span className="status-indicator status-online"></span>
-            <p>Backend Status: <span style={{color: '#10b981'}}>Online</span></p>
-            <p style={{marginTop: '10px'}}>{data.message}</p>
-            <p style={{fontSize: '0.8rem'}}>DB Status: <strong>{data.db_status || 'Checking...'}</strong></p>
-          </div>
-        )}
+    <Router>
+      <div className="app-main">
+        <Navbar />
+        <main className="content">
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/signup" element={<Signup />} />
+            <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="*" element={<Navigate to="/" />} />
+          </Routes>
+        </main>
+        <footer className="main-footer">
+          <p>&copy; 2026 Product Hunt Clone. Built with passion.</p>
+        </footer>
       </div>
-
-      <div className="form-section">
-        <h2>Add New Product</h2>
-        <form onSubmit={handleAddProduct} className="product-form">
-          <div className="input-group">
-            <input 
-              type="text" 
-              placeholder="Product Name" 
-              value={productName} 
-              onChange={(e) => setProductName(e.target.value)} 
-              required 
-            />
-            <input 
-              type="text" 
-              placeholder="Category" 
-              value={productCategory} 
-              onChange={(e) => setProductCategory(e.target.value)} 
-              required 
-            />
-          </div>
-          <input 
-            type="number" 
-            placeholder="Price" 
-            value={productPrice} 
-            onChange={(e) => setProductPrice(e.target.value)} 
-            required 
-          />
-          <textarea 
-            placeholder="Description" 
-            value={productDesc} 
-            onChange={(e) => setProductDesc(e.target.value)} 
-          />
-          <button type="submit" className="add-btn">Add Product</button>
-        </form>
-      </div>
-
-      <div className="list-section">
-        <h2>Recent Products ({products.length})</h2>
-        <div className="product-list">
-          {products.length === 0 ? (
-            <p className="no-products">No products added yet.</p>
-          ) : (
-            products.map((p, index) => (
-              <div key={index} className="product-card">
-                <div className="card-header">
-                  <h3>{p.name}</h3>
-                  <button onClick={() => handleDeleteProduct(p)} className="delete-btn">×</button>
-                </div>
-                <p className="category">{p.category}</p>
-                <p className="price">${p.price}</p>
-                <p className="desc">{p.description}</p>
-              </div>
-            ))
-          )}
-        </div>
-      </div>
-
-      <button onClick={fetchStatus} className="refresh-btn">Refresh Connection</button>
-    </div>
-  )
+    </Router>
+  );
 }
 
-export default App
+export default App;
