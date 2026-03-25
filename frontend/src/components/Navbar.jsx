@@ -22,10 +22,12 @@ const Navbar = () => {
         <div className="nav-links">
           {user ? (
             <>
-              <Link to="/dashboard" className="nav-item">
-                <PlusSquare size={18} />
-                <span>Dashboard</span>
-              </Link>
+              {user.role === 'seller' && (
+                <Link to="/dashboard" className="nav-item">
+                  <PlusSquare size={18} />
+                  <span>Dashboard</span>
+                </Link>
+              )}
               <div className="user-profile">
                 <span>{user.email}</span>
                 <button onClick={handleLogout} className="logout-btn">

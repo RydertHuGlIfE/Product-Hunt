@@ -38,36 +38,92 @@ def home_page():
     })
 
 
-@app.route("/api/signup", methods=['POST'])
-def signup():
+@app.route("/api/signup/seller", methods=['POST'])
+def signup_seller():
     try:
         data = request.get_json()
         if mongo.db is None:
             print("NO DB IM SOO COOKED")
         else:
             print(f"Connected to- {mongo.db.name}")
+        data['role'] = 'seller'
         mongo.db.users.insert_one(data)
-        return jsonify({"message": "User added successfully"}), 200
+        return jsonify({"message": "Seller added successfully"}), 200
     except Exception as e:
         print(f"FUCKED UP: {e}")
         return jsonify({"error": str(e)}), 500
 
 
-@app.route("/api/login", methods=['POST'])
-def login():
+@app.route("/api/login/seller", methods=['POST'])
+def login_seller():
     try:
         data = request.get_json()
         if mongo.db is None:
             print("NO DB AGAIN")
         else:
             print(f"Connected to {mongo.db.name}")
+        data['role'] = 'seller'
         user = mongo.db.users.find_one(data)
         if user:
-            return jsonify({"message": "User found successfully", "user": {"email": data.get("email")}}), 200
+            return jsonify({"message": "Seller found successfully", "user": {"email": data.get("email"), "role": "seller"}}), 200
         else:
-            return jsonify({"error": "Invalid credentials"}), 401
+            return jsonify({"error": "Invalid seller credentials"}), 401
     except Exception as e:
         print(f"FUCKED UP: {e}")
+        return jsonify({"error": str(e)}), 500
+
+
+
+@app.route("/api/signup/consumer", methods=['POST'])
+def signup_consumer():
+    try:
+        data = request.get_json()
+        if mongo.db is None:
+            print("NO DB IM SOO COOKED")
+        else:
+            print(f"Connected to- {mongo.db.name}")
+        data['role'] = 'consumer'
+        mongo.db.users.insert_one(data)
+        return jsonify({"message": "Consumer added successfully"}), 200
+    except Exception as e:
+        print(f"FUCKED UP: {e}")
+        return jsonify({"error": str(e)}), 500
+
+
+@app.route("/api/login/consumer", methods=['POST'])
+def login_consumer():
+    try:
+        data = request.get_json()
+        if mongo.db is None:
+            print("NO DB AGAIN")
+        else:
+            print(f"Connected to {mongo.db.name}")
+        data['role'] = 'consumer'
+        user = mongo.db.users.find_one(data)
+        if user:
+            return jsonify({"message": "Consumer found successfully", "user": {"email": data.get("email"), "role": "consumer"}}), 200
+        else:
+            return jsonify({"error": "Invalid consumer credentials"}), 401
+    except Exception as e:
+        print(f"FUCKED UP: {e}")
+        return jsonify({"error": str(e)}), 500
+
+
+
+@app.route("/api/consumer/view_displayed_products", methods=['POST'])
+def view_displayed_products():
+    try:
+        data = request.get_json()
+        if mongo.db is None:
+            return jsonify({"error": "DB not initialized"}), 500
+        
+        # This endpoint logs a product view
+        product = mongo.db.products.find_one({'name': data.get('name')})
+        if product:
+            return jsonify({"message": "Product view logged", "product": {"name": product['name']}}), 200
+        else:
+            return jsonify({"error": "Product not found"}), 404
+    except Exception as e:
         return jsonify({"error": str(e)}), 500
 
 
@@ -76,49 +132,61 @@ def add_products_seller():
     try:
         data = request.get_json()
         if mongo.db is None:
-            print("Error DB not intialized")
-        else:
-            print(f"Connected to- {mongo.db.name}")
+            return jsonify({"error": "DB not initialized"}), 500
+        
+        # Consistent key for product ownership
+        data['seller_email'] = data.pop('email', None) 
+        
         mongo.db.products.insert_one(data)
         return jsonify({"message": "Product added successfully"}), 200
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
-
-
-@app.route("/api/delete_products", methods=['POST'])
-def delete_products():
-    try:
-        data = request.get_json()
-        if mongo.db is None:
-            print("NO DB AAAA")
-        else:
-            print("MONGO DB IS HERE")
-        mongo.db.products.delete_one(data)
-        return jsonify({"message": "Product deleted successfully"}), 200
-    except Exception as e:
-        return jsonify({"error": str(e)}), 500
-
-@app.route("/api/add_products", methods=['POST'])
-def add_products():
-    try:
-        data = request.get_json()
-        if mongo.db is None:
-            print("Error DB not intialized")
-        else:
-            print(f"Connected to- {mongo.db.name}")
-        mongo.db.products.insert_one(data)
-        return jsonify({"message": "Product added successfully"}), 200
-    except Exception as e:
-        return jsonify({"error": str(e)}), 500
 
 @app.route("/api/products", methods=['GET'])
 def get_products():
     try:
         if mongo.db is None:
             return jsonify({"error": "DB not initialized"}), 500
+        # Return ALL products for the global Home feed
         products = list(mongo.db.products.find({}, {"_id": 0}))
         return jsonify(products), 200
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+
+@app.route("/api/seller/products", methods=['GET'])
+def get_seller_products():
+    try:
+        if mongo.db is None:
+            return jsonify({"error": "DB not initialized"}), 500
+        email = request.args.get('email')
+        if not email:
+            return jsonify({"error": "Email parameter required"}), 400
+        # Return ONLY products belonging to this seller
+        products = list(mongo.db.products.find({'seller_email': email}, {"_id": 0}))
+        return jsonify(products), 200
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+
+@app.route("/api/delete_products", methods=['POST'])
+def delete_products():
+    try:
+        data = request.get_json()
+        name = data.get('name')
+        seller_email = data.get('email')
+        
+        if mongo.db is None:
+            return jsonify({"error": "DB not initialized"}), 500
+            
+        # Ensure only the owner can delete the product
+        result = mongo.db.products.delete_one({'name': name, 'seller_email': seller_email})
+        
+        if result.deleted_count > 0:
+            return jsonify({"message": "Product deleted successfully"}), 200
+        else:
+            return jsonify({"error": "Product not found or unauthorized"}), 404
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 

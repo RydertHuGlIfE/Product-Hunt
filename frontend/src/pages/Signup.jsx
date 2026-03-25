@@ -5,6 +5,7 @@ import { Mail, Lock, UserPlus, AlertCircle, ShoppingBag } from 'lucide-react';
 const Signup = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [role, setRole] = useState('consumer');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
@@ -15,7 +16,7 @@ const Signup = () => {
     setError('');
 
     try {
-      const response = await fetch('/api/signup', {
+      const response = await fetch(`/api/signup/${role}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password })
@@ -52,6 +53,22 @@ const Signup = () => {
         )}
 
         <form onSubmit={handleSignup} className="auth-form">
+          <div className="role-selector">
+            <button 
+              type="button" 
+              className={role === 'consumer' ? 'active' : ''} 
+              onClick={() => setRole('consumer')}
+            >
+              Consumer
+            </button>
+            <button 
+              type="button" 
+              className={role === 'seller' ? 'active' : ''} 
+              onClick={() => setRole('seller')}
+            >
+              Seller
+            </button>
+          </div>
           <div className="input-field">
             <Mail size={18} />
             <input 

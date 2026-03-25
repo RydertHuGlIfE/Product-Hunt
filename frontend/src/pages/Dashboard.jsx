@@ -22,11 +22,10 @@ const Dashboard = () => {
 
   const fetchMyProducts = async () => {
     try {
-      const response = await fetch('/api/products');
+      // Fetch ONLY products belonging to this seller
+      const response = await fetch(`/api/seller/products?email=${user.email}`);
       if (response.ok) {
         const data = await response.json();
-        // Since backend doesn't link products to users yet, we show all products
-        // for this demo purpose.
         setProducts(data);
       }
     } catch (err) {
@@ -37,10 +36,11 @@ const Dashboard = () => {
   const handleAddProduct = async (e) => {
     e.preventDefault();
     setLoading(true);
-    const newProduct = { name, price, category, description };
+    // Include the seller's email in the product data
+    const newProduct = { name, price, category, description, email: user.email };
 
     try {
-      const response = await fetch('/api/add_products', {
+      const response = await fetch('/api/seller/add_products', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(newProduct)
@@ -66,7 +66,7 @@ const Dashboard = () => {
       const response = await fetch('/api/delete_products', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name: productName })
+        body: JSON.stringify({ name: productName, email: user.email })
       });
 
       if (response.ok) {
