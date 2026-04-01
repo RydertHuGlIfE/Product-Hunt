@@ -22,7 +22,6 @@ def get_status():
         "version": "1.0.0"
     })
 
-
 @app.route("/")
 def home_page():
     try:
@@ -37,7 +36,6 @@ def home_page():
         "version": "1.0.0",
         "db_status": db_status
     })
-
 
 @app.route("/api/signup/seller", methods=['POST'])
 def signup_seller():
@@ -82,8 +80,6 @@ def login_seller():
         print(f"FUCKED UP: {e}")
         return jsonify({"error": str(e)}), 500
 
-
-
 @app.route("/api/signup/consumer", methods=['POST'])
 def signup_consumer():
     try:
@@ -105,7 +101,6 @@ def signup_consumer():
         print(f"FUCKED UP: {e}")
         return jsonify({"error": str(e)}), 500
 
-
 @app.route("/api/login/consumer", methods=['POST'])
 def login_consumer():
     try:
@@ -126,7 +121,6 @@ def login_consumer():
     except Exception as e:
         print(f"FUCKED UP: {e}")
         return jsonify({"error": str(e)}), 500
-
 
 
 @app.route("/api/consumer/view_displayed_products", methods=['POST'])
