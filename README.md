@@ -1,4 +1,4 @@
-# Synthetic Horizon (Product Hunt Clone) 🚀
+# Product Hunt 🚀
 
 An elite, full-stack digital product discovery platform built with a high-performance React/Vite frontend and a secure Flask/PyMongo backend architecture. Featuring cinematic framer-motion transitions, dynamic glassmorphic state-loaders, and complete seller-consumer ecosystem isolation.
 
