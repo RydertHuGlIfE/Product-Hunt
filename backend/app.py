@@ -4,6 +4,8 @@ import os
 import dotenv
 from flask_pymongo import PyMongo
 from werkzeug.security import generate_password_hash, check_password_hash
+import google.generativeai as genai
+
 
 dotenv = dotenv.load_dotenv()
 monguri = os.getenv('MONGO_URI')
@@ -13,6 +15,11 @@ app = Flask(__name__)
 app.config['MONGO_URI'] = monguri
 mongo = PyMongo(app)
 CORS(app, resources={r"/api/*": {"origins": "http://localhost:5173"}})
+
+# Configure Gemini
+genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
+model = genai.GenerativeModel('models/gemini-flash-latest')
+model_json = genai.GenerativeModel('models/gemini-flash-latest', generation_config={"response_mime_type": "application/json"})
 
 @app.route('/api/status', methods=['GET'])
 def get_status():
@@ -203,6 +210,43 @@ def delete_products():
         else:
             return jsonify({"error": "Product not found or unauthorized"}), 404
     except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+
+@app.route("/api/ai_verify", methods=['POST'])
+def ai_verify():
+    try:
+        data = request.get_json()
+        products = data.get('products', [])
+        
+        if not products:
+            return jsonify({"error": "No products provided for analysis"}), 400
+
+        analysis_prompt = (
+            "You are a technical consultant for a Global Entity Registry. "
+            "Compare the following technical modules and identify the most 'Optimal' one based on its features, category alignment, and technical depth relative to its price.\n\n"
+        )
+        
+        for i, p in enumerate(products):
+            analysis_prompt += f"Product {i+1}: {p.get('name')}\n"
+            analysis_prompt += f"Price: ${p.get('price')}\n"
+            analysis_prompt += f"Description: {p.get('description')}\n"
+            analysis_prompt += f"Category: {p.get('category')}\n\n"
+            
+        analysis_prompt += (
+            "Analysis rules:\n"
+            "1. Choose exactly one winner.\n"
+            "2. Identify the winner by their exact name.\n"
+            "3. Return the result in JSON format: {'winner': 'product_name'}"
+        )
+        
+        response = model_json.generate_content(analysis_prompt)
+        import json
+        result = json.loads(response.text)
+        
+        return jsonify(result), 200
+    except Exception as e:
+        print(f"AI ERROR: {e}")
         return jsonify({"error": str(e)}), 500
 
 

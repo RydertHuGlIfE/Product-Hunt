@@ -14,6 +14,8 @@ const Home = () => {
   const [compareList, setCompareList] = useState([]);
   const [compareOpen, setCompareOpen] = useState(false);
   const [compareError, setCompareError] = useState('');
+  const [aiWinner, setAiWinner] = useState(null);
+  const [isAnalyzing, setIsAnalyzing] = useState(false);
 
   useEffect(() => {
     fetchProducts();
@@ -87,6 +89,28 @@ const Home = () => {
     setCompareList([]);
     setCompareOpen(false);
     setCompareError('');
+    setAiWinner(null);
+  };
+
+  const handleAnalyze = async () => {
+    setIsAnalyzing(true);
+    setCompareOpen(true); // Open modal immediately to show loading state
+    setAiWinner(null);
+    try {
+      const response = await fetch('/api/ai_verify', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ products: compareList })
+      });
+      if (response.ok) {
+        const data = await response.json();
+        setAiWinner(data.winner);
+      }
+    } catch (err) {
+      console.error('AI Analysis Error:', err);
+    } finally {
+      setIsAnalyzing(false);
+    }
   };
 
   const filteredProducts = products.filter(p => {
@@ -234,10 +258,10 @@ const Home = () => {
             <button
               className="btn-primary"
               style={{ padding: '0.5rem 1.5rem', background: 'linear-gradient(135deg, var(--secondary), var(--secondary-container))', color: 'var(--on-secondary)' }}
-              disabled={compareList.length < 2}
-              onClick={() => setCompareOpen(true)}
+              disabled={compareList.length < 2 || isAnalyzing}
+              onClick={handleAnalyze}
             >
-              Analyze Stack
+              {isAnalyzing ? 'Analyzing...' : 'Analyze Stack'}
             </button>
             <button onClick={clearCompare} style={{ background: 'transparent', border: 'none', color: 'var(--on-surface-variant)', cursor: 'pointer', fontSize: '0.85rem' }}>Clear</button>
           </div>
@@ -273,10 +297,24 @@ const Home = () => {
                     <td style={{ padding: '1.5rem 1rem', borderBottom: '1px solid var(--glass-border)', color: 'var(--text-muted)' }}>License Cost</td>
                     {compareList.map(p => {
                       const prices = compareList.map(x => parseFloat(x.price));
-                      const isBest = parseFloat(p.price) === Math.min(...prices);
+                      const isBestPrice = parseFloat(p.price) === Math.min(...prices);
+                      const isAiWinner = aiWinner && p.name.toLowerCase().trim() === aiWinner.toLowerCase().trim();
+                      
                       return (
                         <td key={p.name} style={{ padding: '1.5rem 1rem', borderBottom: '1px solid var(--glass-border)' }}>
-                          <span style={{ fontSize: '1.5rem', fontWeight: '700', color: isBest ? 'var(--secondary)' : 'var(--on-surface)' }}>${p.price}</span>
+                          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                            <span style={{ fontSize: '1.5rem', fontWeight: '700', color: (isBestPrice || isAiWinner) ? 'var(--secondary)' : 'var(--on-surface)' }}>
+                              ${p.price}
+                            </span>
+                            {isAnalyzing && (
+                              <div className="skeleton-text" style={{ width: '80px', height: '0.75rem', marginBottom: 0 }} />
+                            )}
+                            {isAiWinner && (
+                              <span className="neon-chip" style={{ fontSize: '0.6rem', alignSelf: 'start', background: 'rgba(233,179,255,0.1)', borderColor: 'var(--primary)', color: 'var(--primary)' }}>
+                                AI RECOMMENDED
+                              </span>
+                            )}
+                          </div>
                         </td>
                       );
                     })}
