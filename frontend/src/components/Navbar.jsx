@@ -13,16 +13,14 @@ const Navbar = () => {
   };
 
   return (
-    <nav style={{
-      position: 'sticky',
-      top: 0,
-      zIndex: 100,
-      background: 'rgba(15, 19, 28, 0.7)',
-      backdropFilter: 'blur(24px)',
-      borderBottom: '1px solid var(--glass-border)',
-      padding: '1rem 0'
+    <nav className="glass-header" style={{
+      height: '80px',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center'
     }}>
       <div style={{
+        width: '100%',
         maxWidth: '1400px',
         margin: '0 auto',
         padding: '0 2rem',
@@ -33,45 +31,89 @@ const Navbar = () => {
         {/* Branding */}
         <Link to="/" style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', textDecoration: 'none' }}>
           <div style={{
-            background: 'linear-gradient(135deg, var(--on-surface-variant), var(--on-surface))',
-            padding: '0.5rem',
-            borderRadius: '0.75rem',
+            background: 'var(--secondary)',
+            padding: '0.6rem',
+            borderRadius: '0px',
             display: 'flex',
             alignItems: 'center',
-            justifyContent: 'center'
+            justifyContent: 'center',
+            boxShadow: '2px 2px 0px var(--primary)'
           }}>
-            <Layers size={24} color="var(--background)" />
+            <Layers size={22} color="white" />
           </div>
-          <span style={{ fontFamily: 'var(--font-display)', fontSize: '1.25rem', fontWeight: '700', color: 'var(--on-surface)' }}>
+          <span style={{ 
+            fontFamily: 'var(--font-display)', 
+            fontSize: '1.75rem', 
+            fontWeight: '700', 
+            color: 'var(--on-surface)',
+            letterSpacing: '-0.03em'
+          }}>
             Product Hunt
           </span>
         </Link>
 
-        {/* Search Bar Placeholder (Usually handled inside specific view) */}
-
         <div style={{ display: 'flex', alignItems: 'center', gap: '1.5rem' }}>
           {user ? (
-            <div style={{ display: 'flex', alignItems: 'center', gap: '2rem' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '1.5rem' }}>
               {user.role === 'seller' && (
-                <Link to="/dashboard" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', textDecoration: 'none', color: 'var(--on-surface-variant)' }}>
+                <Link to="/dashboard" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', textDecoration: 'none', color: 'var(--on-surface)', fontWeight: '700' }}>
                   <PlusSquare size={18} />
-                  <span style={{ fontWeight: '500' }}>Dashboard</span>
+                  <span style={{ fontSize: '0.9rem' }}>Dashboard</span>
                 </Link>
               )}
-              <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', background: 'var(--surface-container-low)', padding: '0.5rem 0.5rem 0.5rem 1rem', borderRadius: '2rem', border: '1px solid var(--glass-border)' }}>
-                <span style={{ fontSize: '0.875rem', fontWeight: '600', color: 'var(--on-surface)' }}>{user.email}</span>
-                <button
-                  onClick={handleLogout}
-                  style={{ background: 'var(--surface-container-highest)', border: 'none', padding: '0.5rem', borderRadius: '50%', color: 'var(--on-surface-variant)', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
-                  title="Disconnect Terminal"
+              
+              {/* Technical Stats Widget */}
+              <div style={{ 
+                display: 'flex', 
+                alignItems: 'center', 
+                gap: '0.75rem', 
+                background: 'white', 
+                padding: '0.4rem 0.75rem', 
+                border: '2px solid black', 
+                boxShadow: '2px 2px 0px black' 
+              }}>
+                <span style={{ 
+                  fontSize: '0.65rem', 
+                  fontWeight: '700', 
+                  fontFamily: 'var(--font-mono)', 
+                  background: 'var(--primary)', 
+                  color: 'white', 
+                  padding: '0.1rem 0.4rem' 
+                }}>LIVE</span>
+                <span style={{ fontSize: '0.8rem', fontWeight: '700', fontFamily: 'var(--font-mono)' }}>STORE LIVE</span>
+              </div>
+
+              <div style={{ 
+                display: 'flex', 
+                alignItems: 'center', 
+                gap: '1rem', 
+                background: 'white', 
+                padding: '0.5rem 1rem', 
+                border: '2px solid var(--secondary)', 
+                boxShadow: '2px 2px 0px var(--secondary)' 
+              }}>
+                <span style={{ fontSize: '0.85rem', fontWeight: '700', fontFamily: 'var(--font-mono)', color: 'var(--on-surface)' }}>{user.email}</span>
+                <button 
+                  onClick={handleLogout} 
+                  style={{ 
+                    background: 'var(--primary)', 
+                    border: 'none', 
+                    padding: '0.4rem', 
+                    color: 'white', 
+                    cursor: 'pointer', 
+                    display: 'flex', 
+                    alignItems: 'center', 
+                    justifyContent: 'center' 
+                  }}
+                  title="Logout"
                 >
-                  <LogOut size={16} />
+                  <LogOut size={14} />
                 </button>
               </div>
             </div>
           ) : (
             <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-              <Link to="/login" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', textDecoration: 'none', color: 'var(--on-surface)', fontWeight: '600' }}>
+              <Link to="/login" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', textDecoration: 'none', color: 'var(--on-surface)', fontWeight: '700' }}>
                 <LogIn size={18} />
                 <span>Login</span>
               </Link>

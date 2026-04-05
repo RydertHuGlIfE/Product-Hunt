@@ -111,18 +111,19 @@ const Home = () => {
         background: 'radial-gradient(ellipse at 50% -20%, rgba(200,99,251,0.15) 0%, rgba(15,19,28,0) 70%)',
         marginBottom: '2rem'
       }}>
-        <h1 style={{ fontSize: '4.5rem', color: 'var(--on-surface)', marginBottom: '1rem', lineHeight: '1.1' }}>
-          Global Entity <span className="text-primary">Registry</span>
+        <h1 style={{ fontSize: '4.5rem', color: 'var(--on-surface)', marginBottom: '1rem', lineHeight: '1.2' }}>
+          Product <br /><span style={{ background: 'var(--primary)', color: 'white', padding: '0 1rem' }}>Hunt</span>
         </h1>
-        <p className="text-muted" style={{ fontSize: '1.25rem', maxWidth: '600px', margin: '0 auto 3rem' }}>
-          Explore and acquire verified technical modules, applications, and frameworks from the seller network.
+        <p style={{ fontSize: '1.1rem', maxWidth: '600px', margin: '0 auto 3rem', fontFamily: 'var(--font-mono)', color: 'var(--on-surface-variant)' }}>
+          [GLOBAL_PROJECT_REGISTRY] <br />
+          Experience and acquire verified digital tools from the decentralized maker network.
         </p>
 
-        <div className="input-field" style={{ maxWidth: '600px', margin: '0 auto' }}>
+        <div className="input-field" style={{ maxWidth: '600px', margin: '0 auto', boxShadow: '4px 4px 0px black' }}>
           <Search size={20} className="text-muted" style={{ marginRight: '1rem' }} />
           <input
             type="text"
-            placeholder="Query directory (e.g. Protocol, Name)..."
+            placeholder="Search Registry..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
           />
@@ -173,21 +174,21 @@ const Home = () => {
                 <div
                   key={idx}
                   className="glass-card"
-                  style={{ cursor: 'pointer', padding: '1.5rem', display: 'flex', flexDirection: 'column', border: inCompare ? '1px solid var(--secondary)' : '1px solid var(--glass-border)', boxShadow: inCompare ? '0 0 20px rgba(0, 238, 252, 0.15)' : 'var(--glass-shadow)' }}
+                  style={{ cursor: 'pointer', padding: '1.5rem', display: 'flex', flexDirection: 'column', border: inCompare ? '2px solid var(--primary)' : '2px solid var(--secondary)', boxShadow: inCompare ? '6px 6px 0px var(--primary)' : 'var(--hard-shadow)' }}
                   onClick={() => handleViewProduct(product)}
                 >
-                  <div style={{ display: 'flex', gap: '1rem', marginBottom: '1.5rem' }}>
-                    <div style={{ width: '64px', height: '64px', borderRadius: '1rem', background: 'var(--surface-container-highest)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.75rem', fontWeight: '800', color: 'var(--primary)', border: '1px solid var(--glass-border)', flexShrink: 0 }}>
+                  <div style={{ display: 'flex', gap: '1.25rem', marginBottom: '1.5rem' }}>
+                    <div style={{ width: '64px', height: '64px', background: 'var(--secondary)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.75rem', fontWeight: '800', color: 'white', flexShrink: 0 }}>
                       {product.name ? product.name.charAt(0).toUpperCase() : '?'}
                     </div>
                     <div>
-                      <span className="neon-chip" style={{ fontSize: '0.65rem' }}>{product.category}</span>
-                      <h3 style={{ fontSize: '1.25rem', marginTop: '0.25rem', marginBottom: '0.25rem', color: 'var(--on-surface)' }}>{product.name}</h3>
-                      <div style={{ color: 'var(--secondary)', fontWeight: '700' }}>${product.price}</div>
+                      <span className="neon-chip" style={{ fontSize: '0.6rem' }}>{product.category}</span>
+                      <h3 style={{ fontSize: '1.5rem', marginTop: '0.25rem', marginBottom: '0.25rem', color: 'var(--on-surface)' }}>{product.name}</h3>
+                      <div style={{ color: 'var(--primary)', fontWeight: '800', fontFamily: 'var(--font-mono)' }}>${product.price}</div>
                     </div>
                   </div>
-
-                  <p className="text-muted" style={{ fontSize: '0.9rem', marginBottom: '1.5rem', flex: 1, display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
+                  
+                  <p style={{ fontSize: '0.9rem', marginBottom: '1.5rem', flex: 1, color: 'var(--on-surface-variant)', fontFamily: 'var(--font-body)', overflow: 'hidden' }}>
                     {product.description}
                   </p>
 

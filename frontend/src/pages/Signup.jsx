@@ -49,12 +49,13 @@ const Signup = () => {
       style={{ display: 'flex', width: '100%', minHeight: '100vh', backgroundColor: 'var(--background)' }}
     >
       {/* Left split - Marketing */}
-      <div style={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center', padding: '4rem', background: 'radial-gradient(ellipse at bottom left, rgba(0,238,252,0.15) 0%, transparent 60%)' }}>
-        <h1 style={{ fontSize: '4rem', marginBottom: '1rem' }} className="text-secondary">
-          Initialize<br />Connection
+      <div style={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center', padding: '4rem', background: '#fff', borderRight: '2px solid black' }}>
+        <h1 style={{ fontSize: '4rem', marginBottom: '1rem', color: 'black' }}>
+          Product <br /><span style={{ background: 'var(--primary)', color: 'white', padding: '0 0.5rem' }}>Hunt</span>
         </h1>
-        <p className="text-muted" style={{ fontSize: '1.25rem', maxWidth: '400px' }}>
-          Join the network. Become a registered terminal and gain seamless access to next-generation tools as a consumer or a creator.
+        <p style={{ fontSize: '1.1rem', maxWidth: '400px', color: '#666', fontFamily: 'var(--font-mono)' }}>
+          [GATEWAY_INIT] <br />
+          Join the network. Link your identity to the global project registry.
         </p>
       </div>
 
@@ -63,8 +64,8 @@ const Signup = () => {
         <div className="glass-card" style={{ width: '100%', maxWidth: '480px', padding: '3rem' }}>
           <div style={{ textAlign: 'center', marginBottom: '2.5rem' }}>
             <UserPlus className="text-secondary" size={48} style={{ margin: '0 auto 1rem' }} />
-            <h2 style={{ fontSize: '2rem', marginBottom: '0.5rem' }}>Registration</h2>
-            <p className="text-muted">Create a new terminal identity</p>
+            <h2 style={{ fontSize: '2rem', marginBottom: '0.5rem', color: 'black' }}>Maker Registration</h2>
+            <p style={{ color: '#666', fontFamily: 'var(--font-mono)', fontSize: '0.8rem' }}>PROTOCOL_INIT: NEW_ENROLLMENT</p>
           </div>
 
           {error && (
@@ -75,21 +76,20 @@ const Signup = () => {
           )}
 
           <form onSubmit={handleSignup} style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
-            {/* Role Toggle */}
-            <div style={{ display: 'flex', background: 'var(--surface-container-lowest)', padding: '0.25rem', borderRadius: '3rem', border: '1px solid var(--glass-border)' }}>
-              <button
-                type="button"
-                style={{ flex: 1, padding: '0.75rem', borderRadius: '3rem', border: 'none', background: role === 'consumer' ? 'rgba(0,238,252,0.15)' : 'transparent', color: role === 'consumer' ? 'var(--secondary)' : 'var(--on-surface-variant)', fontWeight: '600', cursor: 'pointer', transition: 'all 0.3s ease', border: role === 'consumer' ? '1px solid rgba(0,238,252,0.3)' : '1px solid transparent' }}
+            <div style={{ display: 'flex', background: '#eee', padding: '0.25rem', border: '2px solid black' }}>
+              <button 
+                type="button" 
+                style={{ flex: 1, padding: '0.75rem', border: 'none', background: role === 'consumer' ? 'black' : 'transparent', color: role === 'consumer' ? 'white' : 'black', fontWeight: '700', cursor: 'pointer', transition: 'all 0.2s ease', fontFamily: 'var(--font-mono)' }}
                 onClick={() => setRole('consumer')}
               >
-                Consumer
+                Hunter
               </button>
-              <button
-                type="button"
-                style={{ flex: 1, padding: '0.75rem', borderRadius: '3rem', border: 'none', background: role === 'seller' ? 'rgba(0,238,252,0.15)' : 'transparent', color: role === 'seller' ? 'var(--secondary)' : 'var(--on-surface-variant)', fontWeight: '600', cursor: 'pointer', transition: 'all 0.3s ease', border: role === 'seller' ? '1px solid rgba(0,238,252,0.3)' : '1px solid transparent' }}
+              <button 
+                type="button" 
+                style={{ flex: 1, padding: '0.75rem', border: 'none', background: role === 'seller' ? 'black' : 'transparent', color: role === 'seller' ? 'white' : 'black', fontWeight: '700', cursor: 'pointer', transition: 'all 0.2s ease', fontFamily: 'var(--font-mono)' }}
                 onClick={() => setRole('seller')}
               >
-                Seller
+                Maker
               </button>
             </div>
 

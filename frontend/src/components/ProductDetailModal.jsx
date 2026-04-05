@@ -8,8 +8,8 @@ const ProductDetailModal = ({ product, loading, onClose }) => {
     <div style={{
       position: 'fixed',
       top: 0, left: 0, right: 0, bottom: 0,
-      background: 'rgba(0, 0, 0, 0.7)',
-      backdropFilter: 'blur(24px)',
+      background: 'rgba(255, 255, 255, 0.9)',
+      backdropFilter: 'grayscale(1)',
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',
@@ -24,18 +24,22 @@ const ProductDetailModal = ({ product, loading, onClose }) => {
         flexDirection: 'row',
         overflow: 'hidden',
         position: 'relative',
-        minHeight: '500px'
+        minHeight: '500px',
+        background: 'white',
+        border: '2px solid black',
+        borderRadius: '0px',
+        boxShadow: '8px 8px 0px black'
       }} onClick={(e) => e.stopPropagation()}>
         
         <button onClick={onClose} style={{
           position: 'absolute', top: '1.5rem', right: '1.5rem',
-          background: 'var(--surface-container-high)',
-          border: '1px solid var(--glass-border)',
-          color: 'var(--on-surface-variant)',
-          borderRadius: '50%', width: '40px', height: '40px',
+          background: 'black',
+          border: 'none',
+          color: 'white',
+          borderRadius: '0px', width: '40px', height: '40px',
           display: 'flex', alignItems: 'center', justifyContent: 'center',
           cursor: 'pointer', zIndex: 10
-        }} className="hover:text-white transition-colors">
+        }} className="hover:bg-[var(--primary)] transition-colors">
           <X size={20} />
         </button>
 
@@ -49,22 +53,22 @@ const ProductDetailModal = ({ product, loading, onClose }) => {
             {/* Left side: Immersive Visual Container */}
             <div style={{
               flex: 1,
-              background: 'linear-gradient(135deg, rgba(200,99,251,0.2) 0%, rgba(0,238,252,0.1) 100%)',
+              background: '#f0f0f0',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
               position: 'relative',
-              borderRight: '1px solid var(--glass-border)'
+              borderRight: '2px solid black'
             }}>
               <div style={{
                 width: '180px', height: '180px',
-                background: 'var(--surface-container-highest)',
-                borderRadius: '3rem',
+                background: 'black',
+                borderRadius: '0px',
                 display: 'flex', alignItems: 'center', justifyContent: 'center',
                 fontSize: '5rem', fontWeight: '800', fontFamily: 'var(--font-display)',
-                color: 'var(--primary)',
-                border: '1px solid rgba(233, 179, 255, 0.3)',
-                boxShadow: '0 0 60px rgba(233, 179, 255, 0.2)'
+                color: 'white',
+                border: '2px solid var(--primary)',
+                boxShadow: '4px 4px 0px var(--primary)'
               }}>
                 {product.name ? product.name.charAt(0).toUpperCase() : '?'}
               </div>
@@ -81,11 +85,11 @@ const ProductDetailModal = ({ product, loading, onClose }) => {
                 <span className="neon-chip" style={{ display: 'inline-block', marginBottom: '1rem' }}>
                   {product.category}
                 </span>
-                <h1 style={{ fontSize: '3rem', lineHeight: '1.1', marginBottom: '0.5rem', color: 'var(--on-surface)' }}>
+                <h1 style={{ fontSize: '3.5rem', lineHeight: '1.1', marginBottom: '0.5rem', color: 'black' }}>
                   {product.name}
                 </h1>
-                <p className="text-muted" style={{ fontSize: '1.1rem' }}>
-                  Supplied by: <span style={{ color: 'var(--secondary)' }}>{product.seller_email}</span>
+                <p style={{ fontSize: '1rem', fontFamily: 'var(--font-mono)' }}>
+                  OWNER: <span style={{ color: 'var(--primary)', fontWeight: '700' }}>{product.seller_email}</span>
                 </p>
               </div>
 
@@ -110,7 +114,7 @@ const ProductDetailModal = ({ product, loading, onClose }) => {
                   <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: 'var(--on-surface-variant)', marginBottom: '0.25rem' }}>
                     <Tag size={16} /> <span style={{ fontSize: '0.875rem', textTransform: 'uppercase', letterSpacing: '1px' }}>License Cost</span>
                   </div>
-                  <div style={{ fontSize: '2.5rem', fontWeight: '800', fontFamily: 'var(--font-display)', color: 'var(--secondary)' }}>
+                  <div style={{ fontSize: '3rem', fontWeight: '800', fontFamily: 'var(--font-mono)', color: 'var(--primary)' }}>
                     ${product.price}
                   </div>
                 </div>

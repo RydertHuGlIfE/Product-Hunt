@@ -54,12 +54,13 @@ const Login = () => {
       style={{ display: 'flex', width: '100%', minHeight: '100vh', backgroundColor: 'var(--background)' }}
     >
       {/* Left split - Marketing */}
-      <div style={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center', padding: '4rem', background: 'radial-gradient(ellipse at bottom left, rgba(200,99,251,0.15) 0%, transparent 60%)' }}>
-        <h1 style={{ fontSize: '4rem', marginBottom: '1rem' }} className="text-primary">
-          Enter The<br />Ecosystem
+      <div style={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center', padding: '4rem', background: '#fff', borderRight: '2px solid black' }}>
+        <h1 style={{ fontSize: '4rem', marginBottom: '1rem', color: 'black' }}>
+          Product <br /><span style={{ background: 'var(--primary)', color: 'white', padding: '0 0.5rem' }}>Hunt</span>
         </h1>
-        <p className="text-muted" style={{ fontSize: '1.25rem', maxWidth: '400px' }}>
-          Interact with next-generation digital products. Access the global network of advanced tools and platforms designed for the future.
+        <p style={{ fontSize: '1.1rem', maxWidth: '400px', color: '#666', fontFamily: 'var(--font-mono)' }}>
+          [GATEWAY_SECURE] <br />
+          Experience and acquire verified digital tools from the global maker network.
         </p>
       </div>
 
@@ -68,8 +69,8 @@ const Login = () => {
         <div className="glass-card" style={{ width: '100%', maxWidth: '480px', padding: '3rem' }}>
           <div style={{ textAlign: 'center', marginBottom: '2.5rem' }}>
             <Fingerprint className="text-primary" size={48} style={{ margin: '0 auto 1rem' }} />
-            <h2 style={{ fontSize: '2rem', marginBottom: '0.5rem' }}>Neural Access</h2>
-            <p className="text-muted">Authenticate your identity</p>
+            <h2 style={{ fontSize: '2rem', marginBottom: '0.5rem', color: 'black' }}>Access Gateway</h2>
+            <p style={{ color: '#666', fontFamily: 'var(--font-mono)', fontSize: '0.8rem' }}>PROTOTYPE_ID: AUTH_REQUIRED</p>
           </div>
 
           {error && (
@@ -81,20 +82,20 @@ const Login = () => {
 
           <form onSubmit={handleLogin} style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
             {/* Role Toggle */}
-            <div style={{ display: 'flex', background: 'var(--surface-container-lowest)', padding: '0.25rem', borderRadius: '3rem', border: '1px solid var(--glass-border)' }}>
-              <button
-                type="button"
-                style={{ flex: 1, padding: '0.75rem', borderRadius: '3rem', border: 'none', background: role === 'consumer' ? 'linear-gradient(135deg, var(--primary), var(--primary-container))' : 'transparent', color: role === 'consumer' ? 'var(--on-primary)' : 'var(--on-surface-variant)', fontWeight: '600', cursor: 'pointer', transition: 'all 0.3s ease' }}
+            <div style={{ display: 'flex', background: '#eee', padding: '0.25rem', border: '2px solid black' }}>
+              <button 
+                type="button" 
+                style={{ flex: 1, padding: '0.75rem', border: 'none', background: role === 'consumer' ? 'black' : 'transparent', color: role === 'consumer' ? 'white' : 'black', fontWeight: '700', cursor: 'pointer', transition: 'all 0.2s ease', fontFamily: 'var(--font-mono)' }}
                 onClick={() => setRole('consumer')}
               >
-                Consumer
+                Hunter
               </button>
-              <button
-                type="button"
-                style={{ flex: 1, padding: '0.75rem', borderRadius: '3rem', border: 'none', background: role === 'seller' ? 'linear-gradient(135deg, var(--primary), var(--primary-container))' : 'transparent', color: role === 'seller' ? 'var(--on-primary)' : 'var(--on-surface-variant)', fontWeight: '600', cursor: 'pointer', transition: 'all 0.3s ease' }}
+              <button 
+                type="button" 
+                style={{ flex: 1, padding: '0.75rem', border: 'none', background: role === 'seller' ? 'black' : 'transparent', color: role === 'seller' ? 'white' : 'black', fontWeight: '700', cursor: 'pointer', transition: 'all 0.2s ease', fontFamily: 'var(--font-mono)' }}
                 onClick={() => setRole('seller')}
               >
-                Seller
+                Maker
               </button>
             </div>
 

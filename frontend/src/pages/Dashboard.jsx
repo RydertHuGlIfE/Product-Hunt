@@ -92,12 +92,12 @@ const Dashboard = () => {
       style={{ display: 'flex', width: '100%', minHeight: 'calc(100vh - 80px)' }}
     >
       {/* Sidebar Navigation */}
-      <div style={{ width: '280px', borderRight: '1px solid var(--glass-border)', background: 'var(--surface-container-low)', padding: '2rem' }}>
+      <div style={{ width: '280px', borderRight: '2px solid black', background: 'white', padding: '2rem' }}>
         <div style={{ marginBottom: '3rem' }}>
-          <h2 style={{ fontSize: '0.875rem', textTransform: 'uppercase', letterSpacing: '1px', color: 'var(--text-muted)', marginBottom: '1rem' }}>Supplier Controls</h2>
-          <nav style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-            <button style={{ display: 'flex', alignItems: 'center', gap: '1rem', padding: '0.75rem 1rem', background: 'rgba(233, 179, 255, 0.1)', color: 'var(--primary)', border: '1px solid rgba(233,179,255,0.2)', borderRadius: '0.75rem', cursor: 'pointer', textAlign: 'left', fontWeight: '600' }}>
-              <Box size={20} /> Module Registry
+          <h2 style={{ fontSize: '0.75rem', textTransform: 'uppercase', letterSpacing: '2px', color: '#666', marginBottom: '1rem', fontFamily: 'var(--font-mono)' }}>[SUPPLIER_CONTROLS]</h2>
+          <nav style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+            <button style={{ display: 'flex', alignItems: 'center', gap: '1rem', padding: '1rem', background: 'var(--primary)', color: 'white', border: '2px solid black', boxShadow: '2px 2px 0px black', cursor: 'pointer', textAlign: 'left', fontWeight: '700' }}>
+              <Box size={18} /> Module Registry
             </button>
           </nav>
         </div>
@@ -108,58 +108,58 @@ const Dashboard = () => {
         
         {/* Header */}
         <div>
-          <h1 style={{ fontSize: '3rem', color: 'var(--on-surface)', marginBottom: '0.5rem' }}>Control System</h1>
-          <p className="text-muted" style={{ fontSize: '1.1rem' }}>Initialize new modules or manage active endpoints.</p>
+          <h1 style={{ fontSize: '3.5rem', color: 'black', marginBottom: '0.5rem' }}>Launcher Panel</h1>
+          <p style={{ fontSize: '1rem', fontFamily: 'var(--font-mono)', color: '#666' }}>[AUTH: HUNTER_v3] Broadcast and manage your active project endpoints.</p>
         </div>
 
         {/* Add Product Form - Horizontal layout */}
-        <div className="glass-panel" style={{ padding: '2.5rem' }}>
-          <h2 style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', color: 'var(--secondary)', marginBottom: '2rem', fontSize: '1.5rem' }}>
-            <PlusCircle size={24} /> Initialize Terminal Module
+        <div className="glass-panel" style={{ padding: '2.5rem', border: '2px solid black', boxShadow: '8px 8px 0px black' }}>
+          <h2 style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', color: 'var(--primary)', marginBottom: '2rem', fontSize: '1.5rem' }}>
+            <PlusCircle size={24} /> New Module Enrollment
           </h2>
           <form onSubmit={handleAddProduct} style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.5rem' }}>
-            <div className="input-field" style={{ background: 'var(--surface-container-highest)', border: '1px solid var(--glass-border)' }}>
-              <Tag size={18} className="text-muted" style={{ marginRight: '0.75rem' }} />
+            <div className="input-field">
+              <Tag size={18} style={{ marginRight: '0.75rem' }} />
               <input 
                 type="text" 
-                placeholder="Entity Designation (Name)" 
+                placeholder="Entity Designation" 
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 required 
               />
             </div>
-            <div className="input-field" style={{ background: 'var(--surface-container-highest)', border: '1px solid var(--glass-border)' }}>
-              <ShoppingBag size={18} className="text-muted" style={{ marginRight: '0.75rem' }} />
+            <div className="input-field">
+              <ShoppingBag size={18} style={{ marginRight: '0.75rem' }} />
               <input 
                 type="text" 
-                placeholder="Protocol Class (Category)" 
+                placeholder="Module Class" 
                 value={category}
                 onChange={(e) => setCategory(e.target.value)}
                 required 
               />
             </div>
-            <div className="input-field" style={{ gridColumn: '1 / -1', background: 'var(--surface-container-highest)', border: '1px solid var(--glass-border)' }}>
-              <TextQuote size={18} className="text-muted" style={{ marginRight: '0.75rem', alignSelf: 'flex-start', marginTop: '1rem' }} />
+            <div className="input-field" style={{ gridColumn: '1 / -1' }}>
+              <TextQuote size={18} style={{ marginRight: '0.75rem', alignSelf: 'flex-start', marginTop: '1rem' }} />
               <textarea 
-                placeholder="Technical Specification (Description)" 
+                placeholder="Technical Specifications..." 
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
                 required 
               />
             </div>
-            <div className="input-field" style={{ background: 'var(--surface-container-highest)', border: '1px solid var(--glass-border)' }}>
-              <DollarSign size={18} className="text-muted" style={{ marginRight: '0.75rem' }} />
+            <div className="input-field">
+              <DollarSign size={18} style={{ marginRight: '0.75rem' }} />
               <input 
                 type="number" 
-                placeholder="License Value" 
+                placeholder="Credit Value" 
                 value={price}
                 onChange={(e) => setPrice(e.target.value)}
                 required 
               />
             </div>
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end' }}>
-              <button type="submit" className="btn-primary" style={{ padding: '1rem 2rem', width: '100%' }} disabled={loading}>
-                {loading ? 'Transmitting Data...' : 'Broadcast Module'}
+              <button type="submit" className="btn-primary" style={{ padding: '1rem 2.5rem', width: '100%' }} disabled={loading}>
+                {loading ? 'Transmitting...' : 'Broadcast Module'}
               </button>
             </div>
           </form>
@@ -178,19 +178,19 @@ const Dashboard = () => {
               </div>
             ) : (
               products.map((p, idx) => (
-                <div key={idx} style={{ padding: '1.5rem 2rem', background: 'var(--surface-container-low)', border: '1px solid var(--glass-border)', borderRadius: '1rem', display: 'flex', alignItems: 'center', justifyContent: 'space-between', transition: 'all 0.2s ease', cursor: 'default' }} className="hover:border-[var(--secondary)]">
+                <div key={idx} style={{ padding: '1.5rem 2rem', background: 'white', border: '2px solid black', borderRadius: '0px', boxShadow: '4px 4px 0px black', display: 'flex', alignItems: 'center', justifyContent: 'space-between', transition: 'all 0.2s ease', cursor: 'default' }}>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '2rem' }}>
-                    <div style={{ width: '48px', height: '48px', borderRadius: '0.75rem', background: 'var(--surface-container-highest)', border: '1px solid var(--glass-border)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.25rem', fontWeight: '800', color: 'var(--primary)' }}>
+                    <div style={{ width: '48px', height: '48px', background: 'black', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.25rem', fontWeight: '800' }}>
                       {p.name ? p.name.charAt(0).toUpperCase() : '?'}
                     </div>
                     <div>
-                      <h3 style={{ fontSize: '1.25rem', color: 'var(--on-surface)', marginBottom: '0.25rem' }}>{p.name}</h3>
+                      <h3 style={{ fontSize: '1.25rem', color: 'black', marginBottom: '0.25rem' }}>{p.name}</h3>
                       <span className="neon-chip">{p.category}</span>
                     </div>
                   </div>
                   
                   <div style={{ display: 'flex', alignItems: 'center', gap: '3rem' }}>
-                    <div style={{ fontSize: '1.5rem', fontWeight: '700', color: 'var(--secondary)' }}>
+                    <div style={{ fontSize: '1.5rem', fontWeight: '800', fontFamily: 'var(--font-mono)', color: 'var(--primary)' }}>
                       ${p.price}
                     </div>
                     <button 
