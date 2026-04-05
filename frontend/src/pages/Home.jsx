@@ -277,7 +277,6 @@ const Home = () => {
                       return (
                         <td key={p.name} style={{ padding: '1.5rem 1rem', borderBottom: '1px solid var(--glass-border)' }}>
                           <span style={{ fontSize: '1.5rem', fontWeight: '700', color: isBest ? 'var(--secondary)' : 'var(--on-surface)' }}>${p.price}</span>
-                          {isBest && <span className="neon-chip" style={{ marginLeft: '0.5rem', fontSize: '0.6rem' }}>Optimal</span>}
                         </td>
                       );
                     })}
