@@ -101,6 +101,16 @@ h1, h2, h3, h4, h5, h6 {
   display: flex;
   align-items: center;
   transition: all 0.3s ease;
+  overflow: hidden; /* Ensure rounded corners clip autofill box-shadow if needed */
+}
+
+/* Override Autofill Styles */
+.input-field input:-webkit-autofill,
+.input-field input:-webkit-autofill:hover,
+.input-field input:-webkit-autofill:focus {
+  -webkit-text-fill-color: var(--on-surface);
+  -webkit-box-shadow: 0 0 0px 1000px var(--surface-container-lowest) inset;
+  transition: background-color 5000s ease-in-out 0s;
 }
 
 .input-field:focus-within {
