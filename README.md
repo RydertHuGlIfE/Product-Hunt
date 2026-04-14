@@ -57,14 +57,47 @@ An elite, full-stack digital product discovery platform engineered with a high-p
 
 ## 🏛 System Architecture
 
+This project follows the **Gemini-Local-Frontend** pattern, where AI-generated analysis is cached on the client side to optimize performance and minimize API overhead.
+
 ```mermaid
 graph TD
-    A[React/Vite Frontend] <-->|Rest API / JSON| B[Flask Backend]
-    B <-->|PyMongo| C[(MongoDB Database)]
-    B <-->|GenAI API| D[Google Gemini AI]
-    A -->|Animations| E[Framer Motion]
-    A -->|State| F[Local Storage / Context]
+    subgraph APP["Global Entity Registry (APP)"]
+        direction TB
+        
+        subgraph FrontendLayer["React Frontend (Client OS)"]
+            direction LR
+            React["React Core"]
+            FM["Framer Motion (Animations)"]
+            LS["Local Storage (Cache/Session)"]
+        end
+
+        subgraph BackendLayer["Flask Backend (Server/Orchestrator)"]
+            direction LR
+            Flask["Flask API"]
+            Mongo["MongoDB (Data Store)"]
+            Gemini["Gemini API (AI Intelligence)"]
+        end
+
+        %% Communications
+        React <==>|"REST API / JSON"| Flask
+        Flask <-->|"PyMongo"| Mongo
+        Flask --->|"Prompt/Analysis"| Gemini
+        
+        %% Local storage links (The 'Gemini-Local' pattern)
+        React --- FM
+        React --- LS
+        Gemini -.->|"Analysis Persistence"| LS
+        Mongo -.->|"Sync/Cache"| LS
+    end
+
+    %% Styling
+    style APP fill:#0f131c,stroke:#00eefc,stroke-width:2px,color:#fff
+    style FrontendLayer fill:#1e293b,stroke:#c863fb,stroke-dasharray: 5 5,color:#fff
+    style BackendLayer fill:#1e293b,stroke:#00eefc,stroke-dasharray: 5 5,color:#fff
+    style Gemini fill:#c863fb,color:#fff,stroke-width:2px
+    style LS fill:#facc15,color:#000,stroke-width:2px
 ```
+
 
 ---
 
