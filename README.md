@@ -4,7 +4,7 @@ An elite, full-stack digital product discovery platform engineered with a high-p
 
 ---
 
-## ✨ Core Features
+##  Core Features
 
 ### 🛒 Dual-Ecosystem Authentication
 - **Consumer Portal**: Specialized interface for browsing, searching, and analyzing public product modules.
