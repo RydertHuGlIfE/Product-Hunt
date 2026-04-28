@@ -1,4 +1,4 @@
-# 🚀 Product Hunt: Digital Module Registry
+#  Product Hunt: Digital Module Registry
 
 An elite, full-stack digital product discovery platform engineered with a high-performance **React/Vite** frontend and a robust **Flask/MongoDB** backend. This platform features cinematic transitions, glassmorphic UI elements, and a dedicated **Gemini AI** integration for technical product analysis.
 
