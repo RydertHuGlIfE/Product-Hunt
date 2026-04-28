@@ -238,6 +238,7 @@ def ai_verify():
             "1. Choose exactly one winner.\n"
             "2. Identify the winner by their exact name.\n"
             "3. Return the result in JSON format: {'winner': 'product_name'}"
+            "4. The product you choose should be worth the price and if 1 product price is majorly large suggest the cheaper option. \n"
         )
         
         response = model_json.generate_content(analysis_prompt)
